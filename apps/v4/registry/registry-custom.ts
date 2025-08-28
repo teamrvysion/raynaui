@@ -1,4 +1,4 @@
-import { registryItemSchema } from "shadcn/schema"
+import { registryItemSchema } from "../lib/schema"
 import { z } from "zod"
 
 // Custom RaynaUI components

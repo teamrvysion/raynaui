@@ -1,4 +1,3 @@
-import { type Registry } from "shadcn/schema"
 import { z } from "zod"
 
 import { blocks } from "@/registry/registry-blocks"
@@ -9,6 +8,8 @@ import { internal } from "@/registry/registry-internal"
 import { lib } from "@/registry/registry-lib"
 import { themes } from "@/registry/registry-themes"
 import { ui } from "@/registry/registry-ui"
+
+import { type Registry } from "../lib/schema"
 
 export const registry = {
   name: "RaynaUI",
