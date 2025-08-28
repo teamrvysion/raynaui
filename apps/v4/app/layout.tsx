@@ -19,14 +19,14 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
   description: siteConfig.description,
-  keywords: ["Next.js", "React", "Tailwind CSS", "Components", "shadcn"],
+  keywords: ["Next.js", "React", "Tailwind CSS", "Components", "RaynaUI"],
   authors: [
     {
-      name: "shadcn",
-      url: "https://shadcn.com",
+      name: "RaynaUI",
+      url: "https://raynaui.com",
     },
   ],
-  creator: "shadcn",
+  creator: "RaynaUI",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [`${process.env.NEXT_PUBLIC_APP_URL}/opengraph-image.png`],
-    creator: "@shadcn",
+    creator: "@raynaui",
   },
   icons: {
     icon: "/favicon.ico",

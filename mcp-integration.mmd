@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant IDE
+    participant MCP_Server
+    participant Registry
+    participant CLI
+
+    IDE->>MCP_Server: List available tools
+    MCP_Server->>IDE: Return tool list
+
+    IDE->>MCP_Server: Search components
+    MCP_Server->>Registry: Query registry
+    Registry->>MCP_Server: Return results
+    MCP_Server->>IDE: Return component list
+
+    IDE->>MCP_Server: Get component examples
+    MCP_Server->>Registry: Get examples
+    Registry->>MCP_Server: Return examples
+    MCP_Server->>IDE: Return example code
+
+    IDE->>MCP_Server: Add component
+    MCP_Server->>CLI: Execute add command
+    CLI->>Registry: Get component
+    CLI->>IDE: Component added 

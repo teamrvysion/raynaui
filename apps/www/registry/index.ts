@@ -11,8 +11,8 @@ import { themes } from "@/registry/registry-themes"
 import { ui } from "@/registry/registry-ui"
 
 export const registry = {
-  name: "shadcn/ui",
-  homepage: "https://ui.shadcn.com",
+  name: "RaynaUI",
+  homepage: "https://raynaui.com",
   items: [
     {
       name: "index",

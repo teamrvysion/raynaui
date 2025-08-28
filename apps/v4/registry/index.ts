@@ -9,6 +9,8 @@ import { internal } from "@/registry/registry-internal"
 import { lib } from "@/registry/registry-lib"
 import { themes } from "@/registry/registry-themes"
 import { ui } from "@/registry/registry-ui"
+import { customComponents } from "@/registry/registry-custom"
+import { customIcons } from "@/registry/registry-custom-icons"
 
 const DEPRECATED_ITEMS = [
   "toast",
@@ -30,8 +32,8 @@ const NEW_YORK_V4_STYLE = {
 }
 
 export const registry = {
-  name: "shadcn/ui",
-  homepage: "https://ui.shadcn.com",
+  name: "RaynaUI",
+  homepage: "https://raynaui.com",
   items: z.array(registryItemSchema).parse(
     [
       {
@@ -50,6 +52,8 @@ export const registry = {
       ...themes,
       ...examples,
       ...internal,
+      ...customComponents,
+      ...customIcons,
     ]
       .filter((item) => {
         return !DEPRECATED_ITEMS.includes(item.name)

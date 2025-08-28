@@ -1,0 +1,116 @@
+graph TB
+    %% User Interface Layer
+    subgraph "User Interface Layer"
+        CLI[CLI Commands]
+        WEB[Website/Documentation]
+        AI[AI Generator]
+    end
+
+    %% Core CLI System
+    subgraph "CLI System (packages/raynaui)"
+        CLI_INIT[init command]
+        CLI_ADD[add command]
+        CLI_BUILD[build command]
+        CLI_MCP[MCP server]
+        CLI_VIEW[view command]
+        CLI_SEARCH[search command]
+    end
+
+    %% Registry System
+    subgraph "Registry System"
+        REGISTRY_INDEX[Registry Index]
+        REGISTRY_UI[UI Components]
+        REGISTRY_BLOCKS[Blocks]
+        REGISTRY_CHARTS[Charts]
+        REGISTRY_THEMES[Themes]
+        REGISTRY_HOOKS[Hooks]
+        REGISTRY_LIB[Library Utils]
+        REGISTRY_EXAMPLES[Examples]
+    end
+
+    %% Build System
+    subgraph "Build System"
+        BUILD_SCRIPTS[Build Scripts]
+        CAPTURE_SCRIPTS[Capture Scripts]
+        REGISTRY_BUILD[Registry Builder]
+        REGISTRY_SYNC[Registry Sync]
+    end
+
+    %% AI Generator System
+    subgraph "AI Generator (packages/ai-generator)"
+        AI_ENGINE[AI Engine]
+        AI_TEMPLATES[Templates]
+        AI_FS[File System Manager]
+        AI_CLI[AI CLI]
+    end
+
+    %% Applications
+    subgraph "Applications"
+        APP_V4[V4 App]
+        APP_WWW[WWW App]
+        APP_DEMO[Demo App]
+    end
+
+    %% External Services
+    subgraph "External Services"
+        ANTHROPIC[Anthropic API]
+        NPM[NPM Registry]
+        GITHUB[GitHub]
+    end
+
+    %% Data Flow
+    CLI --> CLI_INIT
+    CLI --> CLI_ADD
+    CLI --> CLI_BUILD
+    CLI --> CLI_MCP
+    CLI --> CLI_VIEW
+    CLI --> CLI_SEARCH
+
+    CLI_INIT --> REGISTRY_INDEX
+    CLI_ADD --> REGISTRY_INDEX
+    CLI_BUILD --> BUILD_SCRIPTS
+    CLI_MCP --> REGISTRY_INDEX
+
+    REGISTRY_INDEX --> REGISTRY_UI
+    REGISTRY_INDEX --> REGISTRY_BLOCKS
+    REGISTRY_INDEX --> REGISTRY_CHARTS
+    REGISTRY_INDEX --> REGISTRY_THEMES
+    REGISTRY_INDEX --> REGISTRY_HOOKS
+    REGISTRY_INDEX --> REGISTRY_LIB
+    REGISTRY_INDEX --> REGISTRY_EXAMPLES
+
+    BUILD_SCRIPTS --> REGISTRY_BUILD
+    REGISTRY_BUILD --> REGISTRY_SYNC
+    CAPTURE_SCRIPTS --> APP_WWW
+
+    AI --> AI_ENGINE
+    AI --> AI_TEMPLATES
+    AI --> AI_FS
+    AI --> AI_CLI
+
+    AI_ENGINE --> ANTHROPIC
+    AI_FS --> REGISTRY_INDEX
+
+    WEB --> REGISTRY_INDEX
+    APP_V4 --> REGISTRY_INDEX
+    APP_WWW --> REGISTRY_INDEX
+
+    REGISTRY_INDEX --> NPM
+    REGISTRY_INDEX --> GITHUB
+
+    %% Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef cliSystem fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef registrySystem fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef buildSystem fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef aiSystem fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef applications fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef externalServices fill:#fafafa,stroke:#424242,stroke-width:2px
+
+    class CLI,WEB,AI userInterface
+    class CLI_INIT,CLI_ADD,CLI_BUILD,CLI_MCP,CLI_VIEW,CLI_SEARCH cliSystem
+    class REGISTRY_INDEX,REGISTRY_UI,REGISTRY_BLOCKS,REGISTRY_CHARTS,REGISTRY_THEMES,REGISTRY_HOOKS,REGISTRY_LIB,REGISTRY_EXAMPLES registrySystem
+    class BUILD_SCRIPTS,CAPTURE_SCRIPTS,REGISTRY_BUILD,REGISTRY_SYNC buildSystem
+    class AI_ENGINE,AI_TEMPLATES,AI_FS,AI_CLI aiSystem
+    class APP_V4,APP_WWW,APP_DEMO applications
+    class ANTHROPIC,NPM,GITHUB externalServices 

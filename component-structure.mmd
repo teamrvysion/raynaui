@@ -1,0 +1,77 @@
+graph TB
+    subgraph "Component Types"
+        UI[UI Components]
+        BLOCKS[Blocks]
+        CHARTS[Charts]
+        THEMES[Themes]
+        HOOKS[Hooks]
+        LIB[Library]
+        EXAMPLES[Examples]
+    end
+
+    subgraph "UI Components"
+        BUTTON[Button]
+        CARD[Card]
+        INPUT[Input]
+        MODAL[Modal]
+        NAV[Navigation]
+        FORM[Form]
+    end
+
+    subgraph "Blocks"
+        DASHBOARD[Dashboard]
+        LOGIN[Login]
+        PROFILE[Profile]
+        SETTINGS[Settings]
+        ANALYTICS[Analytics]
+    end
+
+    subgraph "Charts"
+        LINE[Line Chart]
+        BAR[Bar Chart]
+        PIE[Pie Chart]
+        AREA[Area Chart]
+        SCATTER[Scatter Plot]
+    end
+
+    subgraph "Themes"
+        NEW_YORK[New York]
+        DEFAULT[Default]
+        CUSTOM[Custom]
+    end
+
+    UI --> BUTTON
+    UI --> CARD
+    UI --> INPUT
+    UI --> MODAL
+    UI --> NAV
+    UI --> FORM
+
+    BLOCKS --> DASHBOARD
+    BLOCKS --> LOGIN
+    BLOCKS --> PROFILE
+    BLOCKS --> SETTINGS
+    BLOCKS --> ANALYTICS
+
+    CHARTS --> LINE
+    CHARTS --> BAR
+    CHARTS --> PIE
+    CHARTS --> AREA
+    CHARTS --> SCATTER
+
+    THEMES --> NEW_YORK
+    THEMES --> DEFAULT
+    THEMES --> CUSTOM
+
+    %% Styling
+    classDef types fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef ui fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef blocks fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef charts fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef themes fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+
+    class UI,BLOCKS,CHARTS,THEMES,HOOKS,LIB,EXAMPLES types
+    class BUTTON,CARD,INPUT,MODAL,NAV,FORM ui
+    class DASHBOARD,LOGIN,PROFILE,SETTINGS,ANALYTICS blocks
+    class LINE,BAR,PIE,AREA,SCATTER charts
+    class NEW_YORK,DEFAULT,CUSTOM themes 

@@ -1,0 +1,50 @@
+graph LR
+    subgraph "Registry Sources"
+        UI[UI Components]
+        BLOCKS[Blocks]
+        CHARTS[Charts]
+        THEMES[Themes]
+        HOOKS[Hooks]
+        LIB[Library]
+        EXAMPLES[Examples]
+    end
+
+    subgraph "Registry Processing"
+        INDEX[Registry Index]
+        SCHEMA[Schema Validation]
+        RESOLVE[Dependency Resolution]
+        BUILD[Build Process]
+    end
+
+    subgraph "Registry Output"
+        JSON[registry.json]
+        INDEX_TS[__index__.tsx]
+        PUBLIC[public/r/]
+        DOCS[Documentation]
+    end
+
+    UI --> INDEX
+    BLOCKS --> INDEX
+    CHARTS --> INDEX
+    THEMES --> INDEX
+    HOOKS --> INDEX
+    LIB --> INDEX
+    EXAMPLES --> INDEX
+
+    INDEX --> SCHEMA
+    SCHEMA --> RESOLVE
+    RESOLVE --> BUILD
+
+    BUILD --> JSON
+    BUILD --> INDEX_TS
+    BUILD --> PUBLIC
+    BUILD --> DOCS
+
+    %% Styling
+    classDef sources fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef processing fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef output fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+
+    class UI,BLOCKS,CHARTS,THEMES,HOOKS,LIB,EXAMPLES sources
+    class INDEX,SCHEMA,RESOLVE,BUILD processing
+    class JSON,INDEX_TS,PUBLIC,DOCS output 

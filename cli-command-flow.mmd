@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant User
+    participant CLI
+    participant Registry
+    participant FileSystem
+    participant NPM
+
+    User->>CLI: npx raynaui init
+    CLI->>FileSystem: Check project structure
+    CLI->>Registry: Get available components
+    CLI->>FileSystem: Create components.json
+    CLI->>NPM: Install dependencies
+    CLI->>FileSystem: Create utils.ts
+    CLI->>User: Project initialized
+
+    User->>CLI: npx raynaui add button
+    CLI->>Registry: Find button component
+    CLI->>Registry: Get dependencies
+    CLI->>FileSystem: Write component files
+    CLI->>NPM: Install dependencies
+    CLI->>User: Component added
+
+    User->>CLI: npx raynaui add dashboard-01
+    CLI->>Registry: Find dashboard block
+    CLI->>Registry: Resolve all dependencies
+    CLI->>FileSystem: Write block files
+    CLI->>NPM: Install all dependencies
+    CLI->>User: Block added 

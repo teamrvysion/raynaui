@@ -1,211 +1,380 @@
-# Contributing
+# Contributing to RaynaUI
 
-Thanks for your interest in contributing to ui.shadcn.com. We're happy to have you here.
+Thank you for your interest in contributing to RaynaUI! This guide will help you get started.
 
-Please take a moment to review this document before submitting your first pull request. We also strongly recommend that you check for open issues and pull requests to see if someone else is working on something similar.
+## 🚀 Quick Start
 
-If you need any help, feel free to reach out to [@shadcn](https://twitter.com/shadcn).
+### Prerequisites
 
-## About this repository
+- Node.js 18 or higher
+- pnpm 8 or higher
+- Git
 
-This repository is a monorepo.
+### Setup
 
-- We use [pnpm](https://pnpm.io) and [`workspaces`](https://pnpm.io/workspaces) for development.
-- We use [Turborepo](https://turbo.build/repo) as our build system.
-- We use [changesets](https://github.com/changesets/changesets) for managing releases.
-
-## Structure
-
-This repository is structured as follows:
-
-```
-apps
-└── www
-    ├── app
-    ├── components
-    ├── content
-    └── registry
-        ├── default
-        │   ├── example
-        │   └── ui
-        └── new-york
-            ├── example
-            └── ui
-packages
-└── cli
-```
-
-| Path                  | Description                              |
-| --------------------- | ---------------------------------------- |
-| `apps/www/app`        | The Next.js application for the website. |
-| `apps/www/components` | The React components for the website.    |
-| `apps/www/content`    | The content for the website.             |
-| `apps/www/registry`   | The registry for the components.         |
-| `packages/cli`        | The `shadcn-ui` package.                 |
-
-## Development
-
-### Fork this repo
-
-You can fork this repo by clicking the fork button in the top right corner of this page.
-
-### Clone on your local machine
-
-```bash
-git clone https://github.com/your-username/ui.git
-```
-
-### Navigate to project directory
-
-```bash
-cd ui
-```
-
-### Create a new Branch
-
-```bash
-git checkout -b my-new-branch
-```
-
-### Install dependencies
-
-```bash
-pnpm install
-```
-
-### Run a workspace
-
-You can use the `pnpm --filter=[WORKSPACE]` command to start the development process for a workspace.
-
-#### Examples
-
-1. To run the `ui.shadcn.com` website:
-
-```bash
-pnpm --filter=www dev
-```
-
-2. To run the `shadcn-ui` package:
-
-```bash
-pnpm --filter=shadcn-ui dev
-```
-
-## Running the CLI Locally
-
-To run the CLI locally, you can follow the workflow:
-
-1. Start by running the registry (main site) to make sure the components are up to date:
-
+1. **Fork and clone the repository**
    ```bash
+   git clone https://github.com/yourusername/raynaui.git
+   cd raynaui
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Start development servers**
+   ```bash
+   # Start the main app
    pnpm v4:dev
+   
+   # Start the website
+   pnpm www:dev
    ```
 
-2. Run the development script for the CLI:
+## 🎨 Adding New Components
 
-   ```bash
-   pnpm shadcn:dev
-   ```
+### 1. Create the Component
 
-3. In another terminal tab, test the CLI by running:
+Create your component in `apps/v4/components/ui/`:
 
-   ```bash
-   pnpm shadcn
-   ```
+```tsx
+// apps/v4/components/ui/my-component.tsx
+"use client"
 
-   To test the CLI in a specific app, use a command like:
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
-   ```bash
-   pnpm shadcn <init | add | ...> -c ~/Desktop/my-app
-   ```
+const myComponentVariants = cva(
+  "base-classes",
+  {
+    variants: {
+      variant: {
+        default: "default-classes",
+        secondary: "secondary-classes",
+      },
+      size: {
+        default: "default-size",
+        sm: "small-size",
+        lg: "large-size",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
 
-4. To run the tests for the CLI:
+export interface MyComponentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof myComponentVariants> {}
 
-   ```bash
-   pnpm --filter=shadcn test
-   ```
+const MyComponent = React.forwardRef<HTMLDivElement, MyComponentProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(myComponentVariants({ variant, size, className }))}
+        {...props}
+      />
+    )
+  }
+)
+MyComponent.displayName = "MyComponent"
 
-This workflow ensures that you are running the most recent version of the registry and testing the CLI properly in your local environment.
-
-## Documentation
-
-The documentation for this project is located in the `www` workspace. You can run the documentation locally by running the following command:
-
-```bash
-pnpm --filter=www dev
+export { MyComponent, myComponentVariants }
 ```
 
-Documentation is written using [MDX](https://mdxjs.com). You can find the documentation files in the `apps/www/content/docs` directory.
+### 2. Add to Registry
 
-## Components
+Add your component to `apps/v4/registry/registry-custom.ts`:
 
-We use a registry system for developing components. You can find the source code for the components under `apps/www/registry`. The components are organized by styles.
-
-```bash
-apps
-└── www
-    └── registry
-        ├── default
-        │   ├── example
-        │   └── ui
-        └── new-york
-            ├── example
-            └── ui
+```tsx
+export const customComponents = [
+  // ... existing components
+  {
+    name: "my-component",
+    type: "components:ui",
+    registryDependencies: [], // Add dependencies if needed
+    files: ["components/ui/my-component.tsx"],
+    dependencies: [], // Add npm dependencies if needed
+    description: "A brief description of your component",
+  },
+]
 ```
 
-When adding or modifying components, please ensure that:
+### 3. Create Example
 
-1. You make the changes for every style.
-2. You update the documentation.
-3. You run `pnpm build:registry` to update the registry.
+Create an example in `apps/v4/app/(app)/examples/my-component/page.tsx`:
 
-## Commit Convention
+```tsx
+import { MyComponent } from "@/components/ui/my-component"
 
-Before you create a Pull Request, please check whether your commits comply with
-the commit conventions used in this repository.
+export default function MyComponentExample() {
+  return (
+    <div className="space-y-4">
+      <MyComponent>Default variant</MyComponent>
+      <MyComponent variant="secondary">Secondary variant</MyComponent>
+    </div>
+  )
+}
+```
 
-When you create a commit we kindly ask you to follow the convention
-`category(scope or module): message` in your commit message while using one of
-the following categories:
+### 4. Add to Navigation
 
-- `feat / feature`: all changes that introduce completely new code or new
-  features
-- `fix`: changes that fix a bug (ideally you will additionally reference an
-  issue if present)
-- `refactor`: any code related change that is not a fix nor a feature
-- `docs`: changing existing or creating new documentation (i.e. README, docs for
-  usage of a lib or cli usage)
-- `build`: all changes regarding the build of the software, changes to
-  dependencies or the addition of new dependencies
-- `test`: all changes regarding tests (adding new tests or changing existing
-  ones)
-- `ci`: all changes regarding the configuration of continuous integration (i.e.
-  github actions, ci system)
-- `chore`: all changes to the repository that do not fit into any of the above
-  categories
+Update `apps/v4/lib/config.ts` to add your component to the navigation:
 
-  e.g. `feat(components): add new prop to the avatar component`
+```tsx
+export const siteConfig = {
+  // ... existing config
+  navItems: [
+    // ... existing items
+    {
+      href: "/examples/my-component",
+      label: "My Component",
+    },
+  ],
+}
+```
 
-If you are interested in the detailed specification you can visit
-https://www.conventionalcommits.org/ or check out the
-[Angular Commit Message Guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
+## 🎯 Adding New Icons
 
-## Requests for new components
+### 1. Create the Icon
 
-If you have a request for a new component, please open a discussion on GitHub. We'll be happy to help you out.
+Create your icon in `apps/v4/components/ui/icons/`:
 
-## CLI
+```tsx
+// apps/v4/components/ui/icons/my-icon.tsx
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
-The `shadcn-ui` package is a CLI for adding components to your project. You can find the documentation for the CLI [here](https://ui.shadcn.com/docs/cli).
+const myIconVariants = cva(
+  "inline-block",
+  {
+    variants: {
+      size: {
+        sm: "h-4 w-4",
+        md: "h-6 w-6",
+        lg: "h-8 w-8",
+        xl: "h-12 w-12",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  }
+)
 
-Any changes to the CLI should be made in the `packages/cli` directory. If you can, it would be great if you could add tests for your changes.
+export interface MyIconProps
+  extends React.SVGProps<SVGSVGElement>,
+    VariantProps<typeof myIconVariants> {}
 
-## Testing
+const MyIcon = React.forwardRef<SVGSVGElement, MyIconProps>(
+  ({ className, size, ...props }, ref) => (
+    <svg
+      ref={ref}
+      className={cn(myIconVariants({ size }), className)}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      {/* Add your SVG paths here */}
+      <path
+        d="M12 2L2 7L12 12L22 7L12 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+)
+MyIcon.displayName = "MyIcon"
 
-Tests are written using [Vitest](https://vitest.dev). You can run all the tests from the root of the repository.
+export { MyIcon, myIconVariants }
+```
+
+### 2. Add to Registry
+
+Add your icon to `apps/v4/registry/registry-custom-icons.ts`:
+
+```tsx
+export const customIcons = [
+  // ... existing icons
+  {
+    name: "my-icon",
+    type: "components:ui",
+    files: ["components/ui/icons/my-icon.tsx"],
+    dependencies: [],
+    description: "A brief description of your icon",
+  },
+]
+```
+
+## 🎨 Adding New Themes
+
+### 1. Create the Theme
+
+Create your theme in `apps/v4/registry/new-york-v4/themes/`:
+
+```tsx
+// apps/v4/registry/new-york-v4/themes/my-theme.tsx
+export const myTheme = {
+  name: "my-theme",
+  label: "My Theme",
+  activeColor: "240 5.9% 10%",
+  cssVars: {
+    "--background": "0 0% 100%",
+    "--foreground": "240 10% 3.9%",
+    "--card": "0 0% 100%",
+    "--card-foreground": "240 10% 3.9%",
+    // ... add all CSS variables
+  },
+}
+```
+
+### 2. Add to Registry
+
+Add your theme to `apps/v4/registry/registry-themes.ts`:
+
+```tsx
+export const themes = [
+  // ... existing themes
+  {
+    name: "my-theme",
+    type: "registry:theme",
+    registryDependencies: ["utils"],
+    files: ["registry/new-york-v4/themes/my-theme.tsx"],
+    dependencies: [],
+    description: "A brief description of your theme",
+  },
+]
+```
+
+## 🧪 Testing
+
+### Run Tests
 
 ```bash
+# Run all tests
 pnpm test
+
+# Run tests in watch mode
+pnpm test:dev
 ```
 
-Please ensure that the tests are passing when submitting a pull request. If you're adding new features, please include tests.
+### Build and Test
+
+```bash
+# Build everything
+pnpm build
+
+# Test the build
+pnpm preview
+```
+
+## 📝 Documentation
+
+### Update Documentation
+
+1. Add component documentation in `apps/v4/content/docs/`
+2. Update examples in `apps/v4/app/(app)/examples/`
+3. Add to the navigation in `apps/v4/lib/config.ts`
+
+### Build Documentation
+
+```bash
+pnpm docs:build
+```
+
+## 🔄 Submitting Changes
+
+### 1. Create a Branch
+
+```bash
+git checkout -b feature/my-new-component
+```
+
+### 2. Make Changes
+
+- Add your component/icon/theme
+- Update registry files
+- Add examples and documentation
+- Test everything works
+
+### 3. Commit and Push
+
+```bash
+git add .
+git commit -m "feat: add my new component"
+git push origin feature/my-new-component
+```
+
+### 4. Create Pull Request
+
+1. Go to GitHub and create a PR
+2. Fill out the PR template
+3. Request review from maintainers
+
+## 📋 PR Checklist
+
+Before submitting a PR, ensure:
+
+- [ ] Component follows RaynaUI patterns
+- [ ] Component is accessible
+- [ ] Component is responsive
+- [ ] Component has TypeScript types
+- [ ] Component has examples
+- [ ] Component is documented
+- [ ] Tests pass
+- [ ] Build succeeds
+- [ ] No console errors
+- [ ] Follows code style guidelines
+
+## 🎯 Guidelines
+
+### Component Guidelines
+
+- **Accessibility**: All components must be accessible
+- **Responsive**: Components should work on all screen sizes
+- **Customizable**: Use `class-variance-authority` for variants
+- **TypeScript**: Full TypeScript support required
+- **Performance**: Components should be performant
+
+### Code Style
+
+- Use TypeScript
+- Follow existing patterns
+- Use meaningful names
+- Add JSDoc comments
+- Keep components simple and focused
+
+### File Structure
+
+```
+apps/v4/
+├── components/ui/           # UI components
+├── components/ui/icons/     # Icon components
+├── registry/               # Registry files
+├── app/(app)/examples/     # Component examples
+└── content/docs/           # Documentation
+```
+
+## 🤝 Community
+
+- Join our [Discord](https://discord.gg/raynaui)
+- Follow us on [Twitter](https://twitter.com/raynaui)
+- Star the repository
+- Share your creations
+
+## 📄 License
+
+By contributing to RaynaUI, you agree that your contributions will be licensed under the MIT License.
+
+---
+
+Thank you for contributing to RaynaUI! 🎉

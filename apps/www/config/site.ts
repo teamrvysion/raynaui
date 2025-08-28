@@ -1,12 +1,12 @@
 export const siteConfig = {
-  name: "shadcn/ui",
-  url: "https://ui.shadcn.com",
-  ogImage: "https://ui.shadcn.com/og.jpg",
+  name: "RaynaUI",
+  url: "https://raynaui.com",
+  ogImage: "https://raynaui.com/og.jpg",
   description:
-    "A set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks. Open Source. Open Code.",
+    "A modern, accessible component library built with React, TypeScript, and Tailwind CSS. Beautiful, customizable, and ready for production.",
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn-ui/ui",
+    twitter: "https://twitter.com/raynaui",
+    github: "https://github.com/yourusername/raynaui",
   },
 }
 

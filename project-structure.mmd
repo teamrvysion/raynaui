@@ -1,0 +1,66 @@
+graph TB
+    subgraph "Project Structure"
+        ROOT[RaynaUI Root]
+        APPS[apps/]
+        PACKAGES[packages/]
+        SCRIPTS[scripts/]
+    end
+
+    subgraph "Apps"
+        V4[apps/v4/]
+        WWW[apps/www/]
+    end
+
+    subgraph "Packages"
+        CLI[packages/raynaui/]
+        AI[packages/ai-generator/]
+        TESTS[packages/tests/]
+    end
+
+    subgraph "V4 App Structure"
+        V4_REGISTRY[registry/]
+        V4_COMPONENTS[components/]
+        V4_SCRIPTS[scripts/]
+        V4_PUBLIC[public/]
+    end
+
+    subgraph "WWW App Structure"
+        WWW_REGISTRY[registry/]
+        WWW_CONTENT[content/]
+        WWW_SCRIPTS[scripts/]
+        WWW_PUBLIC[public/]
+    end
+
+    ROOT --> APPS
+    ROOT --> PACKAGES
+    ROOT --> SCRIPTS
+
+    APPS --> V4
+    APPS --> WWW
+
+    PACKAGES --> CLI
+    PACKAGES --> AI
+    PACKAGES --> TESTS
+
+    V4 --> V4_REGISTRY
+    V4 --> V4_COMPONENTS
+    V4 --> V4_SCRIPTS
+    V4 --> V4_PUBLIC
+
+    WWW --> WWW_REGISTRY
+    WWW --> WWW_CONTENT
+    WWW --> WWW_SCRIPTS
+    WWW --> WWW_PUBLIC
+
+    %% Styling
+    classDef root fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    classDef apps fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef packages fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef v4Structure fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef wwwStructure fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+
+    class ROOT root
+    class APPS,V4,WWW apps
+    class PACKAGES,CLI,AI,TESTS packages
+    class V4_REGISTRY,V4_COMPONENTS,V4_SCRIPTS,V4_PUBLIC v4Structure
+    class WWW_REGISTRY,WWW_CONTENT,WWW_SCRIPTS,WWW_PUBLIC wwwStructure 

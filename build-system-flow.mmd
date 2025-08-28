@@ -1,0 +1,47 @@
+graph TB
+    subgraph "Build Process"
+        BUILD_REGISTRY[Build Registry]
+        CAPTURE_SCREENSHOTS[Capture Screenshots]
+        SYNC_REGISTRY[Sync Registry]
+        GENERATE_DOCS[Generate Documentation]
+    end
+
+    subgraph "Input Sources"
+        REGISTRY_FILES[Registry Files]
+        COMPONENT_FILES[Component Files]
+        BLOCK_FILES[Block Files]
+        THEME_FILES[Theme Files]
+    end
+
+    subgraph "Build Output"
+        REGISTRY_JSON[registry.json]
+        SCREENSHOTS[Screenshots]
+        PUBLIC_R[public/r/]
+        DOCS_SITE[Documentation Site]
+    end
+
+    REGISTRY_FILES --> BUILD_REGISTRY
+    COMPONENT_FILES --> BUILD_REGISTRY
+    BLOCK_FILES --> BUILD_REGISTRY
+    THEME_FILES --> BUILD_REGISTRY
+
+    BUILD_REGISTRY --> REGISTRY_JSON
+    BUILD_REGISTRY --> PUBLIC_R
+
+    BLOCK_FILES --> CAPTURE_SCREENSHOTS
+    CAPTURE_SCREENSHOTS --> SCREENSHOTS
+
+    REGISTRY_JSON --> SYNC_REGISTRY
+    SYNC_REGISTRY --> PUBLIC_R
+
+    REGISTRY_JSON --> GENERATE_DOCS
+    GENERATE_DOCS --> DOCS_SITE
+
+    %% Styling
+    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef sources fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef output fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+
+    class BUILD_REGISTRY,CAPTURE_SCREENSHOTS,SYNC_REGISTRY,GENERATE_DOCS process
+    class REGISTRY_FILES,COMPONENT_FILES,BLOCK_FILES,THEME_FILES sources
+    class REGISTRY_JSON,SCREENSHOTS,PUBLIC_R,DOCS_SITE output 

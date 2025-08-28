@@ -1,12 +1,12 @@
-# shadcn/ui
+# RaynaUI
 
-Accessible and customizable components that you can copy and paste into your apps. Free. Open Source. **Use this to build your own component library**.
+A modern, accessible component library built with React, TypeScript, and Tailwind CSS. Beautiful, customizable, and ready for production. **Use this to build your own component library**.
 
 ![hero](apps/www/public/og.jpg)
 
 ## Documentation
 
-Visit http://ui.shadcn.com/docs to view the documentation.
+Visit https://raynaui.com/docs to view the documentation.
 
 ## Contributing
 

@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant User
+    participant AI_CLI
+    participant AI_Engine
+    participant Anthropic
+    participant Templates
+    participant FileSystem
+
+    User->>AI_CLI: raynaui-ai generate "button"
+    AI_CLI->>AI_Engine: Generate component
+    AI_Engine->>Anthropic: Send prompt
+    Anthropic->>AI_Engine: Return JSON spec
+    AI_Engine->>Templates: Generate code
+    Templates->>AI_Engine: Return component files
+    AI_Engine->>FileSystem: Write files
+    AI_Engine->>AI_CLI: Return result
+    AI_CLI->>User: Component generated
+
+    User->>AI_CLI: raynaui-ai init
+    AI_CLI->>FileSystem: Create project structure
+    AI_CLI->>User: Project initialized 

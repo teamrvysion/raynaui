@@ -25,14 +25,15 @@ export const metadata: Metadata = {
     "Tailwind CSS",
     "Server Components",
     "Radix UI",
+    "RaynaUI",
   ],
   authors: [
     {
-      name: "shadcn",
-      url: "https://shadcn.com",
+      name: "RaynaUI",
+      url: "https://raynaui.com",
     },
   ],
-  creator: "shadcn",
+  creator: "RaynaUI",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@shadcn",
+    creator: "@raynaui",
   },
   icons: {
     icon: "/favicon.ico",
