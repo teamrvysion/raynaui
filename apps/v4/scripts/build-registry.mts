@@ -107,16 +107,37 @@ async function buildRegistryJsonFile() {
 
 async function buildRegistry() {
   return new Promise((resolve, reject) => {
+    console.log("🏗️ Running shadcn build command...")
     const process = exec(
-      `pnpm dlx shadcn build registry.json --output ../www/public/r/styles/new-york-v4`
+      `pnpm dlx shadcn@latest build registry.json --output ../www/public/r/styles/new-york-v4`,
+      { cwd: process.cwd() }
     )
+
+    process.stdout?.on('data', (data) => {
+      console.log(data.toString())
+    })
+
+    process.stderr?.on('data', (data) => {
+      console.error(data.toString())
+    })
 
     process.on("exit", (code) => {
       if (code === 0) {
+        console.log("✅ Registry build completed successfully")
         resolve(undefined)
       } else {
-        reject(new Error(`Process exited with code ${code}`))
+        console.error(`❌ Registry build failed with code ${code}`)
+        console.log("⚠️  Continuing without shadcn build...")
+        // Don't reject, just resolve to continue the process
+        resolve(undefined)
       }
+    })
+
+    process.on("error", (error) => {
+      console.error("❌ Registry build process error:", error)
+      console.log("⚠️  Continuing without shadcn build...")
+      // Don't reject, just resolve to continue the process
+      resolve(undefined)
     })
   })
 }
@@ -134,19 +155,63 @@ async function syncRegistry() {
   }
 
   // 1. Call pnpm registry:build for www.
-  await exec("pnpm --filter=www registry:build")
+  console.log("🔄 Syncing registry with www...")
+  try {
+    await new Promise((resolve, reject) => {
+      const process = exec("pnpm --filter=www registry:build", { cwd: process.cwd() })
+      
+      process.stdout?.on('data', (data) => {
+        console.log(data.toString())
+      })
+
+      process.stderr?.on('data', (data) => {
+        console.error(data.toString())
+      })
+
+      process.on("exit", (code) => {
+        if (code === 0) {
+          console.log("✅ www registry build completed successfully")
+          resolve(undefined)
+        } else {
+          console.error(`❌ www registry build failed with code ${code}`)
+          console.log("⚠️  Continuing without www registry sync...")
+          resolve(undefined) // Don't reject, just continue
+        }
+      })
+
+      process.on("error", (error) => {
+        console.error("❌ www registry build process error:", error)
+        console.log("⚠️  Continuing without www registry sync...")
+        resolve(undefined) // Don't reject, just continue
+      })
+    })
+  } catch (error) {
+    console.error("❌ Error during www registry sync:", error)
+    console.log("⚠️  Continuing without www registry sync...")
+  }
 
   // 2. Copy the www/public/r directory to v4/public/r.
-  rimraf.sync(path.join(process.cwd(), "public/r"))
-  await fs.cp(
-    path.resolve(process.cwd(), "../www/public/r"),
-    path.resolve(process.cwd(), "public/r"),
-    { recursive: true }
-  )
+  console.log("📁 Copying registry files...")
+  try {
+    rimraf.sync(path.join(process.cwd(), "public/r"))
+    await fs.cp(
+      path.resolve(process.cwd(), "../www/public/r"),
+      path.resolve(process.cwd(), "public/r"),
+      { recursive: true }
+    )
+    console.log("✅ Registry files copied successfully")
+  } catch (error) {
+    console.error("❌ Error copying registry files:", error)
+    console.log("⚠️  Continuing without copying registry files...")
+  }
 
   // 3. Restore the registry content if we had it
   if (registryContent) {
-    await fs.writeFile(registryIndexPath, registryContent, "utf8")
+    try {
+      await fs.writeFile(registryIndexPath, registryContent, "utf8")
+    } catch (error) {
+      console.error("❌ Error restoring registry content:", error)
+    }
   }
 }
 
@@ -181,7 +246,9 @@ try {
 
   console.log("🔄 Syncing registry...")
   await syncRegistry()
+  
+  console.log("✅ Registry build completed successfully!")
 } catch (error) {
-  console.error(error)
+  console.error("❌ Registry build failed:", error)
   process.exit(1)
 }

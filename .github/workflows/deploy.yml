@@ -15,7 +15,19 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - run: pnpm install
-      - run: pnpm build
-      - run: pnpm registry:build
-      - run: pnpm docs:build
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build all packages
+        run: pnpm build
+      - name: Test registry build
+        run: |
+          echo "Testing registry build..."
+          pnpm --filter=v4 registry:test
+        continue-on-error: false
+      - name: Build registry
+        run: |
+          echo "Building registry..."
+          pnpm --filter=v4 registry:build
+        continue-on-error: false
+      - name: Build documentation
+        run: pnpm docs:build

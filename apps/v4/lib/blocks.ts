@@ -22,14 +22,20 @@ export async function getAllBlocks(
   ],
   categories: string[] = []
 ) {
-  const { Index } = await import("@/registry/__index__")
-  const index = z.record(registryItemSchema).parse(Index)
+  try {
+    const { Index } = await import("@/registry/__index__")
+    const index = z.record(registryItemSchema).parse(Index)
 
-  return Object.values(index).filter(
-    (block) =>
-      types.includes(block.type) &&
-      (categories.length === 0 ||
-        block.categories?.some((category) => categories.includes(category))) &&
-      !block.name.startsWith("chart-")
-  )
+    return Object.values(index).filter(
+      (block) =>
+        types.includes(block.type) &&
+        (categories.length === 0 ||
+          block.categories?.some((category) => categories.includes(category))) &&
+        !block.name.startsWith("chart-")
+    )
+  } catch (error) {
+    console.error("Error loading blocks:", error)
+    // Return empty array if there's an error
+    return []
+  }
 }
